@@ -1,3 +1,3 @@
-module Amirotate
-  VERSION = "0.1.0"
+module AMIRotate
+  VERSION = "0.0.1"
 end
