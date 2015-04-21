@@ -8,7 +8,19 @@ module AMIRotate
     desc :version, "Puts Gem version."
 
     def version
-      p AMIRotate::VERSION
+      puts "AMIRotate #{VERSION}"
+    end
+
+    desc :init, "Initialize EC2 tags"
+
+    def init
+      puts client
+    end
+
+    private
+
+    def client
+      @client ||= Client.new
     end
   end
 end
