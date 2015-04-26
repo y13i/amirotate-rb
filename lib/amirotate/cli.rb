@@ -46,10 +46,11 @@ module AMIRotate
     end
 
     desc :rotate, "Execute :preserve and :invalidate at a time."
-    method_option :profile_name,                    default: "default"
-    method_option :reboot,          type: :boolean, default: true
-    method_option :retain_snapshot, type: :boolean, default: false
-    method_option :dry_run,         type: :boolean, default: false
+    method_option :profile_name,                      default: "default"
+    method_option :reboot,            type: :boolean, default: true
+    method_option :expiration_offset,                 default: "30 minutes"
+    method_option :retain_snapshot,   type: :boolean, default: false
+    method_option :dry_run,           type: :boolean, default: false
     method_option :filter_tags
 
     def rotate
