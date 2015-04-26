@@ -52,15 +52,15 @@ module AMIRotate
         tag_key = "amirotate:#{@cli_options[:profile_name]}:retention_period"
         tag     = instance.tags.find {|tag| tag.key == tag_key}
 
-        if tag.nil?
-          logger.info "Tag `#{tag_key}` is not set on instance #{instance.instance_id} (#{name}). Skipping."
-          next
-        end
-
         name = begin
           instance.tags.find {|tag| tag.key == "Name"}.value
         rescue
           ""
+        end
+
+        if tag.nil?
+          logger.info "Tag `#{tag_key}` is not set on instance #{instance.instance_id} (#{name}). Skipping."
+          next
         end
 
         logger.info "Create image from instance #{instance.instance_id} (#{name}). Retention period is #{tag.value}."
