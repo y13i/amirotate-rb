@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "guard-rspec"
   spec.add_development_dependency "pry"
 
-  spec.add_dependency "aws-sdk"
+  spec.add_dependency "aws-sdk", ">= 2.0.40"
   spec.add_dependency "thor"
   spec.add_dependency "thor-aws"
 end
