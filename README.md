@@ -1,8 +1,6 @@
 # Amirotate
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/amirotate`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Back up EC2 instances by Snapshot/AMI. Capable of managing backup retention period.
 
 ## Installation
 
@@ -22,7 +20,21 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+`amirotate help` shows subcommands and options.
+
+### 1. Set the tag on EC2 instances
+
+Amirotate use tags attached to EC2 instance to determine instances that should be backed-up.
+
+You can set the tag by `amirotate setup`.
+
+### 2. Create image
+
+`amirotate preserve` to find all your EC2 instances tagged with `amirotate:<profile name>:retention_period` and `CreateImage` them.
+
+### 3. Delete image/snapshot
+
+`amirotate invalidate` to find all your outdated AMIs. Deregister them, then delete all snapshots associated with the AMI..
 
 ## Development
 
