@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["y13i"]
   spec.email         = ["email@y13i.com"]
 
-  spec.summary       = %()
-  spec.description   = %()
+  spec.summary       = %(Back up EC2 instances by Snapshot/AMI.)
+  spec.description   = %(Back up EC2 instances by Snapshot/AMI. Capable of managing backup retention period.)
   spec.homepage      = "https://github.com/y13i/amirotate"
   spec.license       = "MIT"
 
