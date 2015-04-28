@@ -71,7 +71,6 @@ module AMIRotate
             no_reboot: !@cli_options[:reboot],
 
             name: [
-              name,
               instance.instance_id,
               Time.now.strftime("%Y-%m-%d %H.%M.%S"),
             ].join(" - ")
@@ -83,8 +82,15 @@ module AMIRotate
             dry_run: @cli_options[:dry_run],
 
             tags: [
-              key:   tag.key,
-              value: tag.value,
+              {
+                key:   tag.key,
+                value: tag.value,
+              },
+
+              {
+                key:   "Name",
+                value: name,
+              },
             ],
           )
         rescue Aws::EC2::Errors::DryRunOperation
