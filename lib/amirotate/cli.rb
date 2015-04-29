@@ -36,7 +36,7 @@ module AMIRotate
 
     desc :invalidate, "Delete expired AMIs by profile name."
     method_option :profile_name,                      default: "default"
-    method_option :expiration_offset,                 default: "30 minutes"
+    method_option :expiration_offset,                 default: "-5 minutes"
     method_option :retain_snapshot,   type: :boolean, default: false
     method_option :dry_run,           type: :boolean, default: false
     method_option :filter_tags
@@ -48,7 +48,7 @@ module AMIRotate
     desc :rotate, "Execute :preserve and :invalidate at a time."
     method_option :profile_name,                      default: "default"
     method_option :reboot,            type: :boolean, default: false
-    method_option :expiration_offset,                 default: "30 minutes"
+    method_option :expiration_offset,                 default: "-5 minutes"
     method_option :retain_snapshot,   type: :boolean, default: false
     method_option :dry_run,           type: :boolean, default: false
     method_option :filter_tags
