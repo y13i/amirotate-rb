@@ -28,4 +28,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk", ">= 2.0.40"
   spec.add_dependency "thor"
   spec.add_dependency "thor-aws"
+  spec.add_dependency "io-console"
 end
