@@ -93,6 +93,25 @@ module AMIRotate
               },
             ],
           )
+
+          image.block_device_mappings.map do |block_device|
+            logger.info "Tag to snapshot #{block_device.ebs.snapshot_id}"
+            snapshot = Aws::EC2::Snapshot.new(id: block_device.ebs.snapshot_id)
+            snapshot.create_tags(
+              dry_run: @cli_options[:dry_run],
+              tags: [
+                {
+                  key: tag.key,
+                  value: tag.value,
+                },
+
+                {
+                  key:   "Name",
+                  value: name,
+                },
+              ],
+            )
+          end
         rescue Aws::EC2::Errors::DryRunOperation
           logger.info "Did nothing due to dry run."
         end
