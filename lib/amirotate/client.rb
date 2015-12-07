@@ -94,9 +94,12 @@ module AMIRotate
             ],
           )
 
+          image.wait_until {|image| image.state.match /available/}
+
+          logger.info "block devices: #{image.block_device_mappings.size}"
           image.block_device_mappings.map do |block_device|
             logger.info "Tag to snapshot #{block_device.ebs.snapshot_id}"
-            snapshot = Aws::EC2::Snapshot.new(id: block_device.ebs.snapshot_id)
+            snapshot = @ec2.snapshot(block_device.ebs.snapshot_id.to_s)
             snapshot.create_tags(
               dry_run: @cli_options[:dry_run],
               tags: [
@@ -107,7 +110,7 @@ module AMIRotate
 
                 {
                   key:   "Name",
-                  value: name,
+                  value: [name, block_device.device_name].join('-')
                 },
               ],
             )
