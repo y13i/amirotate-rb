@@ -1,5 +1,6 @@
 require "aws-sdk"
 require "time"
+require "ostruct"
 
 module AMIRotate
   class Client
@@ -48,6 +49,7 @@ module AMIRotate
     end
 
     def preserve
+      backuped_amis = []
       instances.each do |instance|
         tag_key = "amirotate:#{@cli_options[:profile_name]}:retention_period"
         tag     = instance.tags.find {|tag| tag.key == tag_key}
@@ -76,6 +78,7 @@ module AMIRotate
             ].join(" - ")
           )
 
+          backuped_amis << OpenStruct.new(name: name, id: image.id, tag: tag)
           image.wait_until {|image| image.state.match /available|pending/}
 
           image.create_tags(
@@ -97,6 +100,40 @@ module AMIRotate
           logger.info "Did nothing due to dry run."
         end
       end
+
+      timeout_at = Time.now + (60 * 5)
+      begin
+        backuped_amis.each do |ami|
+          image = @ec2.image(ami.id)
+          next unless image.state.match /available/
+
+          begin
+            image.block_device_mappings.map do |block_device|
+              logger.info "Tag to snapshot #{block_device.ebs.snapshot_id}"
+              @ec2.snapshot(block_device.ebs.snapshot_id.to_s).create_tags(
+                dry_run: @cli_options[:dry_run],
+                tags: [
+                  {
+                    key: ami.tag.key,
+                    value: ami.tag.value,
+                  },
+
+                  {
+                    key:   "Name",
+                    value: "#{ami.name}: #{block_device.device_name}"
+                  },
+                ],
+              )
+            end
+            backuped_amis.delete(ami)
+          rescue Aws::EC2::Errors
+            next
+          end
+        end
+        break if backuped_amis.empty?
+        logger.info "To wait 1 minutes for the snapshot is created"
+        sleep(60)
+      end while Time.now < timeout_at
     end
 
     def invalidate
