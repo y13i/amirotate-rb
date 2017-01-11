@@ -1,3 +1,5 @@
+**Not maintained. Use [y13i/amirotate](https://github.com/y13i/amirotate) instead.**
+
 # Amirotate
 
 Back up EC2 instances by Snapshot/AMI. Capable of managing backup retention period.
