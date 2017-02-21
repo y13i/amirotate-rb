@@ -15,7 +15,7 @@ module AMIRotate
 
     desc :setup, "Create EC2 tags with given profile name and options."
     method_option :profile_name,                     default: "default"
-    method_option :retention_period,                 default: "2 days"
+    method_option :retention_period,                 default: "7 days"
     method_option :overwrite,        type: :boolean, default: false
     method_option :dry_run,          type: :boolean, default: false
     method_option :filter_tags
